@@ -1,21 +1,17 @@
-import prettier from 'eslint-config-prettier';
 import js from '@eslint/js';
-import { includeIgnoreFile } from '@eslint/compat';
-import perfectionist from 'eslint-plugin-perfectionist/dist';
+import prettier from 'eslint-config-prettier';
+import perfectionist from 'eslint-plugin-perfectionist';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
-import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
-const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default ts.config(
-	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs['flat/recommended'],
 	prettier,
 	...svelte.configs['flat/prettier'],
-	...perfectionist.configs['recommended-natural'],
+	perfectionist.configs['recommended-natural'],
 	{
 		languageOptions: {
 			globals: {
@@ -32,5 +28,8 @@ export default ts.config(
 				parser: ts.parser
 			}
 		}
+	},
+	{
+		ignores: ['build/', '.svelte-kit/', 'dist/', 'src/lib/client/api/openapi.ts']
 	}
 );
